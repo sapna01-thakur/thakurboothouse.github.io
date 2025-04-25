@@ -1,0 +1,217 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thakur Boot House, Tattapani - Quality footwear from Relaxo chappal, Lakhani shoes, Adidas footwear, and more for men, women, boys, girls, and kids in Himachal Pradesh.">
+    <meta name="keywords" content="Thakur Boot House, Tattapani, footwear, Relaxo chappal, Lakhani shoes, Adidas footwear, girls chappal, women juti, women sandals, boys shoes, girls shoes, kids shoes, formal shoes, Himachal Pradesh">
+    <meta name="author" content="Thakur Boot House">
+    <title>Thakur Boot House - Tattapani</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Analytics (Replace G-XXXXXXXXXX with your tracking ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+</head>
+<body class="font-sans bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-800 text-white p-4 sticky top-0 z-10 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold tracking-tight">Thakur Boot House</h1>
+            <ul class="flex space-x-6 text-lg">
+                <li><a href="#home" class="hover:text-orange-300 transition">Home</a></li>
+                <li><a href="#about" class="hover:text-orange-300 transition">About</a></li>
+                <li><a href="#products" class="hover:text-orange-300 transition">Products</a></li>
+                <li><a href="#contact" class="hover:text-orange-300 transition">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-blue-600 to-blue-800 py-24 text-center text-white">
+        <div class="container mx-auto">
+            <h2 class="text-5xl font-bold mb-6">Welcome to Thakur Boot House</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Shop premium footwear from Relaxo, Lakhani, Adidas, and more for all ages in Tattapani!</p>
+            <a href="#products" class="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition text-lg font-semibold">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-blue-800 mb-8">About Us</h2>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                Thakur Boot House, located in Tattapani, Himachal Pradesh, offers a wide range of quality footwear from top brands like Relaxo, Lakhani, and Adidas. Explore stylish chappals, juti, sandals, and shoes for men, women, and kids.
+            </p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="bg-gray-50 py-20">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center text-blue-800 mb-12">Our Footwear Collection</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1: Relaxo Chappal -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg" alt="Relaxo Chappal" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Relaxo Chappal</h3>
+                    <p class="text-gray-600">Comfortable and stylish chappals for daily wear by Relaxo.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹199 - ₹799</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 2: Lakhani Shoes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg" alt="Lakhani Shoes" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Lakhani Shoes</h3>
+                    <p class="text-gray-600">Durable sports and casual shoes by Lakhani.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹999 - ₹2,499</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 3: Adidas Footwear -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/1159670/pexels-photo-1159670.jpeg" alt="Adidas Footwear" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Adidas Footwear</h3>
+                    <p class="text-gray-600">Premium sports and lifestyle shoes by Adidas.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹2,999 - ₹7,999</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 4: Girls' Chappal -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/2421374/pexels-photo-2421374.jpeg" alt="Girls' Chappal" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Girls' Chappal</h3>
+                    <p class="text-gray-600">Stylish and lightweight chappals for young girls.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹299 - ₹999</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 5: Women's Juti -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/273930/pexels-photo-273930.jpeg" alt="Women's Juti" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Women's Juti</h3>
+                    <p class="text-gray-600">Traditional and modern juti for festive and casual wear.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹599 - ₹1,799</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 6: Women's Sandals -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/3782786/pexels-photo-3782786.jpeg" alt="Women's Sandals" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Women's Sandals</h3>
+                    <p class="text-gray-600">Trendy flats and heels for everyday elegance.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹499 - ₹1,499</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 7: Boys' Shoes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg" alt="Boys' Shoes" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Boys' Shoes</h3>
+                    <p class="text-gray-600">Durable and stylish sneakers for active boys.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹799 - ₹1,999</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 8: Girls' Shoes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/2300334/pexels-photo-2300334.jpeg" alt="Girls' Shoes" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Girls' Shoes</h3>
+                    <p class="text-gray-600">Trendy and comfortable shoes for young fashionistas.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹699 - ₹1,799</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 9: Kids' Shoes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.pexels.com/photos/36029/pexels-photo.jpg" alt="Kids' Shoes" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Kids' Shoes</h3>
+                    <p class="text-gray-600">Colorful and sturdy shoes for little adventurers.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹399 - ₹1,299</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+                <!-- Product 10: Formal Shoes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772" alt="Formal Shoes" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Formal Shoes</h3>
+                    <p class="text-gray-600">Elegant leather shoes for professional settings.</p>
+                    <p class="text-orange-500 font-bold mt-2">₹1,499 - ₹2,999</p>
+                    <a href="#contact" class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-blue-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold text-blue-800 mb-8">Contact Us</h2>
+            <p class="text-lg text-gray-700 mb-6">Visit our store or reach out to us!</p>
+            <p class="text-lg mb-4"><strong>Name:</strong> Thakur Dass</p>
+            <p class="text-lg mb-4"><strong>Address:</strong> SBI Tattapani, Main Bus Stand Tattapani, Tattapani, Mandi, Himachal Pradesh</p>
+            <p class="text-lg mb-6"><strong>Phone:</strong> +91 8628875245</p>
+            <div class="max-w-lg mx-auto">
+                <form class="space-y-6">
+                    <input type="text" placeholder="Your Name" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="email" placeholder="Your Email" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <textarea placeholder="Your Message" class="w-full p-4 rounded-lg border border-gray-300 h-36 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <button type="button" onclick="alert('Message sent! We will get back to you soon.')" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition text-lg font-semibold">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white py-6 text-center">
+        <p class="text-lg">© 2025 Thakur Boot House, Tattapani. All rights reserved.</p>
+    </footer>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
